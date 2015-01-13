@@ -2,6 +2,8 @@
 
 var React = require('react');
 
+var Player = require('./Player.jsx');
+var LoadingIndicator = require('./LoadingIndicator.jsx');
 var ShufflerFM = require('../services/ShufflerFM');
 
 var TrackDetails = React.createClass({
@@ -24,11 +26,21 @@ var TrackDetails = React.createClass({
     },
 
     render: function () {
-        var content = this.state.track ?
-            <h2>{this.state.track.metadata.title}</h2> :
-            <div>Loading...</div>;
+        if (!this.state.track) {
+            return <LoadingIndicator />;
+        }
 
-         return <div>{content}</div>;
+        var track = this.state.track;
+        var divStyles = {
+            backgroundImage: 'url('+(track.images ? track.images['640x400'].url : './assets/empty-card.png')+')'
+        };
+
+        return (
+            <div style={divStyles} className="artwork">
+                <h2><span className="track">{track.metadata.title}</span></h2>
+                <h3><span className="artist">{track.metadata.artist.name}</span></h3>
+            </div>
+        );
     }
 });
 

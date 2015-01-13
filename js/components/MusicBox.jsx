@@ -1,6 +1,7 @@
 'use strict';
 
-var React = require('react');
+var React = require('react/addons');
+var ReactCSSTransitionGroup = React.ReactCSSTransitionGroup;
 var Link = require('react-router').Link;
 
 var LoadingIndicator = require('./LoadingIndicator.jsx');
@@ -40,7 +41,11 @@ var TrackList = React.createClass({
                 return <Track key={track.id} track={track} />;
             });
 
-        return <div className="popular-list clearfix">{trackNodes}</div>;
+        return (
+            <div className="popular-list clearfix">
+                {trackNodes}
+            </div>
+        );
     }
 });
 
