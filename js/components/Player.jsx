@@ -26,61 +26,62 @@ var PlayerUtilsMixin = {
     }
 };
 
-var Waveform = React.createClass({
-    componentDidMount: function () {
-        var container = this.getDOMNode();
-        soundcloud.resolveWaveform({
-            container: container,
-            trackId: this.props.trackId
-        });
-    },
-
-    render: function () {
-        return <div className="waveform"></div>;
-    }
-});
-
-var PlayButton = React.createClass({
-    render: function () {
-
-    }
-});
-
-var Timer = React.createClass({
+var Player = React.createClass({
     mixins: [PlayerUtilsMixin],
 
     getInitialState: function () {
-        return {currentTime: 0};
+        return {
+            duration: 0,
+            currentTime: 0,
+            playing: false,
+        };
     },
 
-    onTimerUpdate: function () {
-        this.setState({currentTime: this.props.audio.currentTime});
+    componentDidMount: function () {
+        soundcloud.preload(this.props.streamUrl);
+        soundcloud.on('timeupdate', this.getCurrentTime);
+        soundcloud.on('loadedmetadata', this.getDuration);
+        soundcloud.on('ended', this.finishPlaying);
     },
 
-    render: function () {
-        return <span>{this.prettyTime(this.state.currentTime)} - {this.prettyTime(this.props.audio.duration)}</span>;
-    }
-});
-
-var Player = React.createClass({
-    getInitialState: function () {
-        return {playing: false};
+    componentWillUnmount: function () {
+        soundcloud.pause();
+        soundcloud.off('timeupdate', this.getCurrentTime);
+        soundcloud.off('loadedmetadata', this.getDuration);
+        soundcloud.off('ended', this.updatePlayingStatus);
     },
 
     playPauseTrack: function () {
         if (this.state.playing) {
-            this.setState({playing: false});
             soundcloud.pause();
         } else {
-            soundcloud.play({streamUrl: this.props.streamUrl});
-            this.setState({playing: true});
+            soundcloud.play();
         }
+        this.setState({playing: soundcloud.playing});
+    },
+
+    seekTrack: function (e) {
+        var xPos = (e.pageX - e.target.getBoundingClientRect().left) / e.target.offsetWidth;
+        soundcloud.audio.currentTime = (xPos * soundcloud.audio.duration);
+    },
+
+    finishPlaying: function () {
+        this.setState({playing: false});
+    },
+
+    getCurrentTime: function () {
+        this.setState({currentTime: soundcloud.audio.currentTime});
+    },
+
+    getDuration: function () {
+        this.setState({duration: soundcloud.audio.duration});
     },
 
     render: function () {
         var btnIcon = this.state.playing ?
             <svg viewBox="0 0 32 32" fill="#fff"><path d="M0 0 H12 V32 H0 z M20 0 H32 V32 H20 z"></path></svg> :
             <svg viewBox="0 0 32 32" fill="#fff"><path d="M0 0 L32 16 L0 32 z"></path></svg>;
+        var progressVal = (this.state.currentTime/this.state.duration) || 0;
 
         return (
             <div className="soundcloud-player">
@@ -88,10 +89,10 @@ var Player = React.createClass({
                     {btnIcon}
                 </div>
                 <div className="waveform">
-                    <progress value="0.33715897273180045"></progress>
+                    <progress onClick={this.seekTrack} value={progressVal}></progress>
                 </div>
                 <div className="timer">
-                    02:35 / 05:40
+                    {this.prettyTime(this.state.currentTime)} / {this.prettyTime(this.state.duration)}
                 </div>
             </div>
         );

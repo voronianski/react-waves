@@ -5,13 +5,16 @@ var SoundCloudAudio = require('soundcloud-audio');
 var Waveform = require('waveform.js');
 var request = require('superagent');
 
-var _instance;
-
 function SoundCloud (clientId) {
     SoundCloudAudio.call(this, clientId);
 }
 
 inherits(SoundCloud, SoundCloudAudio);
+
+SoundCloud.prototype.preload = function (streamUrl) {
+    this._track = {stream_url: streamUrl};
+    this.audio.src = streamUrl+'?client_id='+this._clientId;
+};
 
 // for future versions this needs to be investigated
 // in order to add SoundCloud-like pretty waveforms
