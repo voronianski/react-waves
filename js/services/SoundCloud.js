@@ -1,66 +1,35 @@
 'use strict';
 
-var load = require('load-script');
-var request = require('superagent');
+var inherits = require('util').inherits;
+var SoundCloudAudio = require('soundcloud-audio');
 var Waveform = require('waveform.js');
-var config = require('../config');
+var request = require('superagent');
 
-var CLIENT_ID = config.soundcloud.clientID;
-var BASE_URL = 'http://api.soundcloud.com';
-var SDK_URL = 'http://connect.soundcloud.com/sdk.js';
+var _instance;
 
-var SoundCloud = exports;
+function SoundCloud (clientId) {
+    SoundCloudAudio.call(this, clientId);
+}
 
-var _SC; // shared instance
+inherits(SoundCloud, SoundCloudAudio);
 
-SoundCloud.init = function (callback) {
-    load(SDK_URL, function (err) {
-        if (err) {
-            console.error(err);
-            throw new Error('SoundCloud cannot be initialized!');
-        }
-        _SC = window.SC;
-        _SC.initialize({client_id: CLIENT_ID});
-    });
-};
-
-SoundCloud.sharedInstance = function () {
-    return _SC;
-};
-
-SoundCloud.createWaveform = function (options) {
-    options = options || {};
-
-    _SC.get('/tracks/'+options.trackId, function (track) {
-        var waveform = new Waveform({
-            container: options.element,
-            innerColor: '#333'
-        });
-
-        waveform.dataFromSoundCloudTrack(track);
-
-        var streamOptions = waveform.optionsForSyncedStream();
-        _SC.stream(track.uri, streamOptions, function (stream) {
-            stream.play();
-        });
-    });
-};
-
-SoundCloud.generateWaveform = function (options) {
-    request.get(BASE_URL+'/tracks/'+options.trackId)
-        .query({'client_id': CLIENT_ID})
+// for future versions this needs to be investigated
+// in order to add SoundCloud-like pretty waveforms
+SoundCloud.prototype.resolveWaveform = function (opts, callback) {
+    request.get(this._baseUrl+'/tracks/'+opts.trackId)
+        .query({'client_id': this._clientId})
         .end(function (res) {
             var track = res.body;
 
             var waveform = new Waveform({
-                container: options.el,
-                innerColor: '#333',
-                height: 50
+                container: opts.container,
+                innerColor: 'rgba(255,255,255,.8)',
+                height: 80
             });
 
             // magic due to lack of High DPI Canvas support
             // https://github.com/soundcloud/waveformjs/pull/22
-            var ctx = waveform.ctx;
+            var ctx = waveform.context;
             var devicePixelRatio = window.devicePixelRatio || 1;
             var backingStoreRatio = ctx.webkitBackingStorePixelRatio ||
                                     ctx.mozBackingStorePixelRatio ||
@@ -78,11 +47,9 @@ SoundCloud.generateWaveform = function (options) {
             }
 
             waveform.dataFromSoundCloudTrack(track);
-            // var streamOptions = waveform.optionsForSyncedStream();
-            // _SC.stream(track.uri, streamOptions, function (stream) {
-            //     stream.play();
-            // });
         });
 };
+
+module.exports = SoundCloud;
 
 

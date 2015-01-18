@@ -1,7 +1,6 @@
 'use strict';
 
 var React = require('react/addons');
-var ReactCSSTransitionGroup = React.ReactCSSTransitionGroup;
 var Link = require('react-router').Link;
 
 var LoadingIndicator = require('./LoadingIndicator.jsx');
@@ -10,10 +9,9 @@ var ShufflerFM = require('../services/ShufflerFM');
 var Track = React.createClass({
     render: function () {
         var track = this.props.track;
-        var images = track.images;
-        var divStyles = {
-            backgroundImage: 'url('+(images ? images.ipad364.url : './assets/empty-card.png')+')'
-        };
+        var divStyles = track.images ?
+            {backgroundImage: 'url('+track.images.ipad364.url+')'} :
+            {};
 
         return (
             <div style={divStyles} className="box">

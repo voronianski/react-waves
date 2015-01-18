@@ -1,7 +1,7 @@
 'use strict';
 
-// es6-shim
-require('array.prototype.find');
+require('es5-shim');
+require('array.prototype.find'); // es6-shim
 
 var React = require('react');
 var ReactRouter = require('react-router');

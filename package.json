@@ -24,7 +24,9 @@
     "load-script": "0.0.5",
     "marked": "^0.3.2",
     "react": "^0.12.2",
+    "react-inlinesvg": "^0.2.4",
     "react-router": "^0.11.6",
+    "soundcloud-audio": "^0.1.0",
     "superagent": "^0.21.0",
     "waveform.js": "^1.0.0"
   },
