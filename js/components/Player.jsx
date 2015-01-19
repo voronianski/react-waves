@@ -33,7 +33,7 @@ var Player = React.createClass({
         return {
             duration: 0,
             currentTime: 0,
-            playing: false,
+            playing: false
         };
     },
 
@@ -48,7 +48,7 @@ var Player = React.createClass({
         soundcloud.pause();
         soundcloud.off('timeupdate', this.getCurrentTime);
         soundcloud.off('loadedmetadata', this.getDuration);
-        soundcloud.off('ended', this.updatePlayingStatus);
+        soundcloud.off('ended', this.finishPlaying);
     },
 
     playPauseTrack: function () {
