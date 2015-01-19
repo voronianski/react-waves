@@ -41,14 +41,14 @@ var Player = React.createClass({
         soundcloud.preload(this.props.streamUrl);
         soundcloud.on('timeupdate', this.getCurrentTime);
         soundcloud.on('loadedmetadata', this.getDuration);
-        soundcloud.on('ended', this.finishPlaying);
+        soundcloud.on('seeking', this.onSeekingTrack);
+        soundcloud.on('seeked', this.onSeekedTrack);
+        soundcloud.on('ended', this.onAudioEnded);
     },
 
     componentWillUnmount: function () {
         soundcloud.pause();
-        soundcloud.off('timeupdate', this.getCurrentTime);
-        soundcloud.off('loadedmetadata', this.getDuration);
-        soundcloud.off('ended', this.finishPlaying);
+        soundcloud.unbindAll();
     },
 
     playPauseTrack: function () {
@@ -65,7 +65,17 @@ var Player = React.createClass({
         soundcloud.audio.currentTime = (xPos * soundcloud.audio.duration);
     },
 
-    finishPlaying: function () {
+    onSeekingTrack: function () {
+        // show preloading svg on button
+        console.log('seeking');
+    },
+
+    onSeekedTrack: function () {
+        // change to actual play/pause icon
+        console.log('seeked');
+    },
+
+    onAudioEnded: function () {
         this.setState({playing: false});
     },
 

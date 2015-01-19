@@ -210,7 +210,7 @@ a:hover {
 }
 .soundcloud-player .play-btn {
     display: inline-block;
-    border: 1px solid rgba(163, 56, 2, .9);
+    border: 1px solid rgba(163, 56, 2, .2);
     width: 64px;
     height: 64px;
     background-color: rgba(239, 57, 33, .9);
@@ -228,7 +228,7 @@ a:hover {
     position: absolute;
     top: 0;
     left: 30px;
-    border-radius: 3px;
+    border-radius: 2px;
     z-index: -1;
 }
 .soundcloud-player .play-btn > svg {
@@ -249,8 +249,8 @@ a:hover {
 .waveform progress {
     display: block;
     width: 100%;
-    height: 6px;
-    background-color: rgba(255, 255, 255, .2);
+    height: 100%;
+    background-color: rgba(255, 255, 255, .3);
     margin: 0;
     border: 0;
     -webkit-appearance: none;
@@ -258,7 +258,7 @@ a:hover {
 }
 .waveform progress::-webkit-progress-bar {
     -webkit-appearance: none;
-    background-color: rgba(255, 255, 255, .2);
+    background-color: rgba(255, 255, 255, .3);
 }
 .waveform progress::-webkit-progress-value {
     -webkit-appearance: none;
@@ -274,10 +274,9 @@ a:hover {
     font-size: 11px;
     position: absolute;
     right: 30px;
-    bottom: 11px;
+    bottom: 14px;
     z-index: 2;
 }
-
 .soundcloud-logo {
     position: absolute;
     top: 30px;

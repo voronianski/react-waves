@@ -11,13 +11,38 @@ function SoundCloud (clientId) {
 
 inherits(SoundCloud, SoundCloudAudio);
 
+// maybe add to original version?
 SoundCloud.prototype.preload = function (streamUrl) {
     this._track = {stream_url: streamUrl};
     this.audio.src = streamUrl+'?client_id='+this._clientId;
 };
 
+SoundCloud.prototype._events = {};
+
+SoundCloud.prototype.on = function (e, fn) {
+    this._events[e] = fn;
+    this.audio.addEventListener(e, fn, false);
+};
+
+SoundCloud.prototype.off = function (e, fn) {
+    this._events[e] = null;
+    this.audio.removeEventListener(e, fn);
+};
+
+SoundCloud.prototype.unbindAll = function () {
+    for (var e in this._events) {
+        var fn = this._events[e];
+        if (fn) {
+            this.off(e, fn);
+        }
+    }
+};
+
 // for future versions this needs to be investigated
 // in order to add SoundCloud-like pretty waveforms
+// - make waveforms draw look as originals
+// - redraw on `whileplaying` and `whileloading`
+// - make possible to seek on clicked position
 SoundCloud.prototype.resolveWaveform = function (opts, callback) {
     request.get(this._baseUrl+'/tracks/'+opts.trackId)
         .query({'client_id': this._clientId})
