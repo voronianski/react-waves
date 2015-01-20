@@ -15,7 +15,7 @@ var PlayerUtilsMixin = {
         mins = mins.substr(mins.length - 2);
         secs = secs.substr(secs.length - 2);
         if (!isNaN(secs)) {
-            if (hours){
+            if (hours) {
                 return hours+':'+mins+':'+secs;
             } else {
                 return mins+':'+secs;
