@@ -1,4 +1,5 @@
 @import url('reset.css');
+@import url('../node_modules/animate.css/animate.css');
 
 @font-face {
     font-family: 'Akkurat';
@@ -12,11 +13,14 @@
 }
 
 ::-moz-selection {
-  background: rgba(255, 85, 34, .25);
+    background: rgba(255, 85, 34, .25);
+}
+::selection {
+    background: rgba(255, 85, 34, .25);
 }
 
-::selection {
-  background: rgba(255, 85, 34, .25);
+html, body {
+    height: 100%;
 }
 
 body {
@@ -57,7 +61,7 @@ a:hover {
 }
 
 .loading {
-    margin: 150px auto;
+    margin: 150px auto 200px;
     text-align: center;
 }
 
@@ -66,14 +70,19 @@ a:hover {
     min-width: 320px;
     width: 90%;
     margin: 20px auto;
+    position: relative;
 }
 
 .info {
     background-color: #ededed;
     font-size: .8em;
     padding: 10px;
-    margin-bottom: 50px;
     text-align: center;
+    position: absolute;
+    left: 0;
+    margin-right: 0;
+    width: 100%;
+    bottom: -10px;
     cursor: default;
     border-radius: 2px;
 }

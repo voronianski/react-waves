@@ -40,7 +40,7 @@ var TrackList = React.createClass({
             });
 
         return (
-            <div className="popular-list clearfix">
+            <div className="popular-list animated bounceInUp clearfix">
                 {trackNodes}
             </div>
         );
