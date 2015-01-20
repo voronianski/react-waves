@@ -33,7 +33,8 @@ var Player = React.createClass({
         return {
             duration: 0,
             currentTime: 0,
-            playing: false
+            playing: false,
+            seeking: false
         };
     },
 
@@ -66,13 +67,11 @@ var Player = React.createClass({
     },
 
     onSeekingTrack: function () {
-        // show preloading svg on button
-        console.log('seeking');
+        this.setState({seeking: true});
     },
 
     onSeekedTrack: function () {
-        // change to actual play/pause icon
-        console.log('seeked');
+        this.setState({seeking: false});
     },
 
     onAudioEnded: function () {
@@ -88,15 +87,17 @@ var Player = React.createClass({
     },
 
     render: function () {
-        var btnIcon = this.state.playing ?
-            <svg viewBox="0 0 32 32" fill="#fff"><path d="M0 0 H12 V32 H0 z M20 0 H32 V32 H20 z"></path></svg> :
-            <svg viewBox="0 0 32 32" fill="#fff"><path d="M0 0 L32 16 L0 32 z"></path></svg>;
+        var btnIcon = this.state.seeking ?
+            './assets/loading-bars-white.svg' :
+             this.state.playing ?
+                './assets/pause.svg' :
+                './assets/play.svg';
         var progressVal = (this.state.currentTime/this.state.duration) || 0;
 
         return (
             <div className="soundcloud-player">
                 <div className="play-btn" onClick={this.playPauseTrack}>
-                    {btnIcon}
+                    <img src={btnIcon} />
                 </div>
                 <div className="waveform">
                     <progress onClick={this.seekTrack} value={progressVal}></progress>
