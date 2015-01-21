@@ -106,7 +106,7 @@ a:hover {
 }
 .box .content {
     color: #fff;
-    background-color: rgba(0,0,0, .8);
+    background-color: rgba(25, 28, 33, 0.91);
     padding: 10px;
     height: 60px;
     position: absolute;
