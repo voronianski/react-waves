@@ -71,7 +71,7 @@ var Comment = React.createClass({
                     <div className="comment-author">
                         <a href={author.permalink_url}>{author.username}</a>
                     </div>
-                    <div className="comment-body">{this.props.children}</div>
+                    <div className="comment-body" dangerouslySetInnerHTML={{__html: this.props.children}}></div>
                 </div>
                 <div className="comment-time">{timeAgo}</div>
             </div>
