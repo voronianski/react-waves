@@ -1,5 +1,7 @@
 'use strict';
 
+var config = require('../config');
+
 var inherits = require('util').inherits;
 var SoundCloudAudio = require('soundcloud-audio');
 var Waveform = require('waveform.js');
@@ -36,6 +38,14 @@ SoundCloud.prototype.unbindAll = function () {
             this.off(e, fn);
         }
     }
+};
+
+SoundCloud.prototype.get = function (url, callback) {
+    request.get(url)
+        .query({'client_id': this._clientId})
+        .end(function (res) {
+            callback(res.body);
+        });
 };
 
 // for future versions this needs to be investigated
@@ -78,6 +88,4 @@ SoundCloud.prototype.resolveWaveform = function (opts, callback) {
         });
 };
 
-module.exports = SoundCloud;
-
-
+module.exports = new SoundCloud(config.soundcloud.clientID);

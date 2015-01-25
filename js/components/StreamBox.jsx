@@ -3,7 +3,9 @@
 var React = require('react');
 
 var ShufflerFM = require('../services/ShufflerFM');
+
 var Player = require('./Player.jsx');
+var CommentBox = require('./CommentBox.jsx');
 var LoadingIndicator = require('./LoadingIndicator.jsx');
 
 var TrackDetails = React.createClass({
@@ -24,21 +26,27 @@ var TrackDetails = React.createClass({
     },
 
     render: function () {
-        if (!this.state.track) {
+        var track = this.state.track;
+
+        if (!track) {
             return <LoadingIndicator />;
         }
 
-        var track = this.state.track;
+        var streamUrl = track.stream.url;
+        var commentsUrl = streamUrl.replace('stream', 'comments');
         var divStyles = track.images ?
             {backgroundImage: 'url('+track.images['640x400'].url+')'} :
             {};
 
         return (
-            <div style={divStyles} className="artwork">
-                <h2><span className="track info-box">{track.metadata.title}</span></h2>
-                <h3><span className="artist info-box">by {track.metadata.artist.name}</span></h3>
-                <Player streamUrl={this.state.track.stream.url} />
-                <div className="soundcloud-logo"><img src="assets/soundcloud-logo.svg" /></div>
+            <div>
+                <div style={divStyles} className="artwork">
+                    <div className="soundcloud-logo"><img src="assets/soundcloud-logo.svg" /></div>
+                    <h2><span className="track info-box">{track.metadata.title}</span></h2>
+                    <h3><span className="artist info-box">by {track.metadata.artist.name}</span></h3>
+                    <Player streamUrl={streamUrl} />
+                </div>
+                <CommentBox url={commentsUrl} />
             </div>
         );
     }

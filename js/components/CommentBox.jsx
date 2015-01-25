@@ -1,8 +1,8 @@
 'use strict';
 
 var React = require('react');
-var marked = require('marked');
-var api = require('../services/apiMock');
+
+var soundcloud = require('../services/SoundCloud');
 
 var CommentBox = React.createClass({
     getInitialState: function () {
@@ -10,20 +10,20 @@ var CommentBox = React.createClass({
     },
 
     loadComments: function () {
-        api.get(this.props.url, function (data) {
+        soundcloud.get(this.props.url, function (data) {
             if (this.isMounted()) {
                 this.setState({comments: data});
             }
         }.bind(this));
     },
 
-    sendComment: function (comment) {
-        var newComments = this.state.comments.concat([comment]);
-        this.setState({comments: newComments});
-        api.post(this.props.url, comment, function (data) {
-            this.setState({comments: data});
-        }.bind(this));
-    },
+    // sendComment: function (comment) {
+    //     var newComments = this.state.comments.concat([comment]);
+    //     this.setState({comments: newComments});
+    //     api.post(this.props.url, comment, function (data) {
+    //         this.setState({comments: data});
+    //     }.bind(this));
+    // },
 
     componentDidMount: function () {
         this.loadComments();
@@ -31,7 +31,7 @@ var CommentBox = React.createClass({
 
     render: function () {
         return (
-            <div className="commentBox">
+            <div className="comment-box">
                 <CommentForm onCommentSubmit={this.sendComment} />
                 <CommentList data={this.state.comments} />
             </div>
@@ -42,11 +42,11 @@ var CommentBox = React.createClass({
 var CommentList = React.createClass({
     render: function () {
         var commentNodes = this.props.data.map(function (comment) {
-            return <Comment key={comment.id} author={comment.author}>{comment.text}</Comment>;
+            return <Comment key={comment.id} author={comment.user}>{comment.body}</Comment>;
         });
 
         return (
-            <div className="commentList">
+            <div className="comment-list">
                 {commentNodes}
             </div>
         );
@@ -55,11 +55,19 @@ var CommentList = React.createClass({
 
 var Comment = React.createClass({
     render: function () {
-        var parsedMarkdown = marked(this.props.children.toString());
+        var author = this.props.author || {};
+
         return (
-            <div className="comment">
-                <h2 className="commentAuthor">{this.props.author}</h2>
-                <div dangerouslySetInnerHTML={{__html: parsedMarkdown}} />
+            <div className="comment clearfix">
+                <a href={author.permalink_url}>
+                    <img className="comment-avatar" src={author.avatar_url} />
+                </a>
+                <div className="comment-text">
+                    <div className="comment-author">
+                        <a href={author.permalink_url}>{author.username}</a>
+                    </div>
+                    <div>{this.props.children}</div>
+                </div>
             </div>
         );
     }
@@ -84,8 +92,7 @@ var CommentForm = React.createClass({
 
     render: function () {
         return (
-            <form className="commentForm" onSubmit={this.handleSubmit}>
-                <input type="text" placeholder="Your name" ref="author" />
+            <form className="comment-form" onSubmit={this.handleSubmit}>
                 <textarea placeholder="Say something..." ref="text" />
                 <button type="submit">Post</button>
             </form>

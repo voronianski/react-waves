@@ -1,10 +1,9 @@
 'use strict';
 
 var React = require('react');
-var SoundCloud = require('../services/SoundCloud');
-var config = require('../config');
+var soundcloud = require('../services/SoundCloud');
 
-var soundcloud = new SoundCloud(config.soundcloud.clientID);
+// var  = new SoundCloud(config.soundcloud.clientID);
 
 var PlayerUtilsMixin = {
     prettyTime: function (time) {
@@ -92,6 +91,7 @@ var Player = React.createClass({
              this.state.playing ?
                 './assets/pause.svg' :
                 './assets/play.svg';
+
         var progressVal = (this.state.currentTime/this.state.duration) || 0;
 
         return (
