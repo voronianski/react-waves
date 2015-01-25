@@ -1,6 +1,7 @@
 'use strict';
 
 var React = require('react');
+var moment = require('moment');
 
 var soundcloud = require('../services/SoundCloud');
 
@@ -32,7 +33,6 @@ var CommentBox = React.createClass({
     render: function () {
         return (
             <div className="comment-box">
-                <CommentForm onCommentSubmit={this.sendComment} />
                 <CommentList data={this.state.comments} />
             </div>
         );
@@ -42,7 +42,11 @@ var CommentBox = React.createClass({
 var CommentList = React.createClass({
     render: function () {
         var commentNodes = this.props.data.map(function (comment) {
-            return <Comment key={comment.id} author={comment.user}>{comment.body}</Comment>;
+            return (
+                <Comment key={comment.id} author={comment.user} created={comment.created_at}>
+                    {comment.body}
+                </Comment>
+            );
         });
 
         return (
@@ -56,9 +60,10 @@ var CommentList = React.createClass({
 var Comment = React.createClass({
     render: function () {
         var author = this.props.author || {};
+        var timeAgo = moment(this.props.created).fromNow(true);
 
         return (
-            <div className="comment clearfix">
+            <div className="comment clearfix animated fadeIn">
                 <a href={author.permalink_url}>
                     <img className="comment-avatar" src={author.avatar_url} />
                 </a>
@@ -66,8 +71,9 @@ var Comment = React.createClass({
                     <div className="comment-author">
                         <a href={author.permalink_url}>{author.username}</a>
                     </div>
-                    <div>{this.props.children}</div>
+                    <div className="comment-body">{this.props.children}</div>
                 </div>
+                <div className="comment-time">{timeAgo}</div>
             </div>
         );
     }

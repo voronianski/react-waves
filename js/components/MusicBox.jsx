@@ -3,8 +3,9 @@
 var React = require('react/addons');
 var Link = require('react-router').Link;
 
-var LoadingIndicator = require('./LoadingIndicator.jsx');
 var ShufflerFM = require('../services/ShufflerFM');
+var LoadingIndicator = require('./LoadingIndicator.jsx');
+var InfoBox = require('./InfoBox.jsx');
 
 var Track = React.createClass({
     render: function () {
@@ -44,9 +45,7 @@ var TrackList = React.createClass({
                 <div className="popular-list animated bounceInUp clearfix">
                     {trackNodes}
                 </div>
-                <div className="info">
-                    This is a demo application that makes use of <a href="https://developers.soundcloud.com">SoundCloud</a> and <a href="http://developers.shuffler.fm">Shuffler.fm</a> APIs powered by <a href="http://facebook.github.io/react">React</a> components.
-                </div>
+                <InfoBox />
             </div>
         );
     }

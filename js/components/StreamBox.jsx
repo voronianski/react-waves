@@ -7,6 +7,7 @@ var ShufflerFM = require('../services/ShufflerFM');
 var Player = require('./Player.jsx');
 var CommentBox = require('./CommentBox.jsx');
 var LoadingIndicator = require('./LoadingIndicator.jsx');
+var InfoBox = require('./InfoBox.jsx');
 
 var TrackDetails = React.createClass({
     getInitialState: function () {
@@ -47,6 +48,7 @@ var TrackDetails = React.createClass({
                     <Player streamUrl={streamUrl} />
                 </div>
                 <CommentBox url={commentsUrl} />
+                <InfoBox />
             </div>
         );
     }
