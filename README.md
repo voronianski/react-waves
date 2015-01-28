@@ -10,6 +10,7 @@
 
 * Add SoundCloud OAuth and ability to add track comments
 * Global page player (in order to not stop track playing when switching back to list view)
+* Port SoundCloud-like waveforms (?)
 
 ## License
 
