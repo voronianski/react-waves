@@ -2,11 +2,13 @@
 
 > Single-page application that makes use of [SoundCloud](https://developers.soundcloud.com) and [Shuffler.fm](http://developers.shuffler.fm) APIs powered by [React](http://facebook.github.io/react) components.
 
-![](https://dl.dropboxusercontent.com/u/100463011/react-waves-list.png)
+[![](https://dl.dropboxusercontent.com/u/100463011/react-waves-list-small.png)](http://labs.voronianski.com/react-waves)
 
-## How to run locally?
+## How to
 
-## Next Goals
+## Tools used
+
+## Next goals
 
 * Add SoundCloud OAuth and ability to add track comments
 * Global page player (in order to not stop track playing when switching back to list view)
