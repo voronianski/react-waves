@@ -6,8 +6,9 @@ var ShufflerFM = require('../services/ShufflerFM');
 
 var Player = require('./Player.jsx');
 var CommentBox = require('./CommentBox.jsx');
-var LoadingIndicator = require('./LoadingIndicator.jsx');
+var SiteBox = require('./SiteBox.jsx');
 var InfoBox = require('./InfoBox.jsx');
+var LoadingIndicator = require('./LoadingIndicator.jsx');
 
 var TrackDetails = React.createClass({
     getInitialState: function () {
@@ -47,7 +48,10 @@ var TrackDetails = React.createClass({
                     <h3><span className="artist info-box">by {track.metadata.artist.name}</span></h3>
                     <Player streamUrl={streamUrl} />
                 </div>
-                <CommentBox url={commentsUrl} />
+                <div className="clearfix">
+                    <CommentBox url={commentsUrl} />
+                    <SiteBox site={track.site} />
+                </div>
                 <InfoBox />
             </div>
         );

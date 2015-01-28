@@ -4,10 +4,6 @@
 
 [![](https://dl.dropboxusercontent.com/u/100463011/react-waves-list-small.png)](http://labs.voronianski.com/react-waves)
 
-## How to
-
-## Tools used
-
 ## Next goals
 
 * Add SoundCloud OAuth and ability to add track comments

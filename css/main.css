@@ -291,11 +291,9 @@ a:hover {
     padding-right: 30px;
     border-right: 1px solid #f2f2f2;
     width: 70%;
+    float: left;
     min-height: 300px;
     margin-bottom: 25px;
-}
-.comment-list {
-
 }
 .comment-list .comment {
     padding: 10px 0;
@@ -331,3 +329,8 @@ a:hover {
     right: 0;
 }
 
+.sidebar {
+    width: 30%;
+    float: right;
+    padding-left: 20px;
+}

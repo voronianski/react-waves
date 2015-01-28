@@ -60,7 +60,12 @@ var CommentList = React.createClass({
 var Comment = React.createClass({
     render: function () {
         var author = this.props.author || {};
-        var timeAgo = moment(this.props.created).fromNow(true);
+        var timeAgo = moment(new Date(this.props.created)).fromNow(true);
+        var html = this.props.children.replace(
+            /(\b(https?|ftp|file):\/\/[-A-Z0-9+&@#\/%?=~_|!:,.;]*[-A-Z0-9+&@#\/%=~_|])/ig,
+            function (url) {
+                return '<a href="' + url + '" target="_blank">' + url + '</a>';
+            });
 
         return (
             <div className="comment clearfix animated fadeIn">
@@ -71,7 +76,7 @@ var Comment = React.createClass({
                     <div className="comment-author">
                         <a href={author.permalink_url}>{author.username}</a>
                     </div>
-                    <div className="comment-body" dangerouslySetInnerHTML={{__html: this.props.children}}></div>
+                    <div className="comment-body" dangerouslySetInnerHTML={{__html: html}}></div>
                 </div>
                 <div className="comment-time">{timeAgo}</div>
             </div>
